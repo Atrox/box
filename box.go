@@ -23,7 +23,7 @@ func New() *Box {
 	}
 }
 
-func (b *Box) Print(lines ...string) {
+func (b *Box) String(lines ...string) string {
 	sideMargin := strings.Repeat(" ", b.SideMargin)
 	longestLine := longestLine(lines)
 
@@ -59,14 +59,16 @@ func (b *Box) Print(lines ...string) {
 		texts = append(texts, fmt.Sprintf(singleLineFormat, b.VerticalSeperator, space+sideMargin, line, oddSpace))
 	}
 
-	fmt.Printf(blockFormat, bar, strings.Join(texts, "\n"))
+	return fmt.Sprintf(blockFormat, bar, strings.Join(texts, "\n"))
+}
+
+func (b *Box) Print(lines ...string) {
+	fmt.Print(b.String(lines...))
 }
 
 // Println adds a newline before and after the box
 func (b *Box) Println(lines ...string) {
-	fmt.Println()
-	b.Print(lines...)
-	fmt.Println()
+	fmt.Printf("\n%s\n", b.String(lines...))
 }
 
 func longestLine(lines []string) int {
