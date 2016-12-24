@@ -10,15 +10,15 @@ const singleLineFormat = "%[1]s%[2]s%[3]s%[2]s%[4]s%[1]s"
 const blockFormat = "%[1]s\n%s\n%[1]s\n"
 
 type Box struct {
-	HorizontalSeperator string
-	VerticalSeperator   string
+	HorizontalSeparator string
+	VerticalSeparator   string
 	SideMargin          int
 }
 
 func New() *Box {
 	return &Box{
-		HorizontalSeperator: "=",
-		VerticalSeperator:   "|",
+		HorizontalSeparator: "=",
+		VerticalSeparator:   "|",
 		SideMargin:          2,
 	}
 }
@@ -28,7 +28,7 @@ func (b *Box) String(lines ...string) string {
 	longestLine := longestLine(lines)
 
 	// create top and bottom bars
-	bar := strings.Repeat(b.HorizontalSeperator, longestLine+b.SideMargin+4)
+	bar := strings.Repeat(b.HorizontalSeparator, longestLine+b.SideMargin+4)
 
 	// create lines to print
 	var texts []string
@@ -50,13 +50,13 @@ func (b *Box) String(lines ...string) string {
 			space = strings.Repeat(" ", toAdd)
 
 			// if the difference between the longest and current one
-			// is odd, we have to add one additional space before the last vertical seperator
+			// is odd, we have to add one additional space before the last vertical separator
 			if diff%2 != 0 {
 				oddSpace = " "
 			}
 		}
 
-		texts = append(texts, fmt.Sprintf(singleLineFormat, b.VerticalSeperator, space+sideMargin, line, oddSpace))
+		texts = append(texts, fmt.Sprintf(singleLineFormat, b.VerticalSeparator, space+sideMargin, line, oddSpace))
 	}
 
 	return fmt.Sprintf(blockFormat, bar, strings.Join(texts, "\n"))
@@ -71,14 +71,12 @@ func (b *Box) Println(lines ...string) {
 	fmt.Printf("\n%s\n", b.String(lines...))
 }
 
-func longestLine(lines []string) int {
-	var longest int
+func longestLine(lines []string) (longest int) {
 	for _, line := range lines {
 		length := utf8.RuneCountInString(line)
 		if length > longest {
 			longest = length
 		}
 	}
-
-	return longest
+	return
 }
